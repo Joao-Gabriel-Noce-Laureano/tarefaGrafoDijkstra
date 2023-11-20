@@ -1,26 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define V 6
 
 typedef struct grafo {
     int numVertices;
-    int matGraph [V][V];
+    int **matGraph;
 } GRAFO;
 
 //Função para criar grafo
-GRAFO* criaGrafo(int numVertices, int matGraph [V][V])
+GRAFO* criaGrafo(int numVertices)
 {
 	int i, j;
 	GRAFO* graph = (GRAFO *) malloc(sizeof(GRAFO));
 	graph->numVertices = numVertices;
+	
+	graph->matGraph = (int **)malloc(graph->numVertices * sizeof(int*)); 
+	for(i = 0; i < graph->numVertices; i++) graph->matGraph[i] = (int*) malloc(graph->numVertices * sizeof(int));
+	
 	for (i = 0; i < graph->numVertices; i++) {
         for (j = 0; j < graph->numVertices; j++) {
-            graph->matGraph[i][j] = matGraph[i][j];
+            graph->matGraph[i][j] = 0;
         }
     }
 	
 	return graph;
 }
+
+void insereGrafo(GRAFO* graph, int ini, int fim,int peso)
+{
+	if(ini >= 0 && ini < graph->numVertices && fim >= 0 && fim < graph->numVertices)  graph->matGraph[ini][fim] = peso;
+}
+
+
 
 // Função para imprimir a matriz do grafo
 void imprimeMatriz(GRAFO* graph) {
@@ -117,9 +127,11 @@ int menorCaminho(GRAFO* graph,int ini, int fim)
 
 
 int main() {
-	int i;
+	int i,j;
 	
-	int matr [V][V] = {{0, 1, 4, 0, 0, 0},
+	
+	int matr [6][6] = {
+	{0, 1, 4, 0, 0, 0},
 	{1, 0, 4, 2, 7, 0},
 	{4, 4, 0, 3, 5, 0},
 	{0, 2, 3, 0, 4, 6},
@@ -127,10 +139,19 @@ int main() {
 	{0, 0, 0, 6, 7, 0}
 	};
 	
-	GRAFO* graph = criaGrafo(V, matr);
+	GRAFO* graph = criaGrafo(6);
+	
+	for (i = 0; i < graph->numVertices; i++) {
+        for (j = 0; j < graph->numVertices; j++) {
+            insereGrafo(graph, i, j,matr [i][j]);
+        }
+    }
+	
+	
+
 	
 	imprimeMatriz(graph);
 	printf("\n");
-	menorCaminho(graph,0, 5);
+	menorCaminho(graph,0, 4);
     return 0;
 }
