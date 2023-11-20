@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define V 6
 
 typedef struct grafo {
     int numVertices;
@@ -130,7 +131,7 @@ int main() {
 	int i,j;
 	
 	
-	int matr [6][6] = {
+	int matr [V][V] = {
 	{0, 1, 4, 0, 0, 0},
 	{1, 0, 4, 2, 7, 0},
 	{4, 4, 0, 3, 5, 0},
@@ -139,19 +140,16 @@ int main() {
 	{0, 0, 0, 6, 7, 0}
 	};
 	
-	GRAFO* graph = criaGrafo(6);
+	GRAFO* graph = criaGrafo(V);
 	
 	for (i = 0; i < graph->numVertices; i++) {
-        for (j = 0; j < graph->numVertices; j++) {
-            insereGrafo(graph, i, j,matr [i][j]);
-        }
-    }
-	
-	
-
+	    for (j = 0; j < graph->numVertices; j++) {
+	        insereGrafo(graph, i, j,matr [i][j]);
+	    }
+	}
 	
 	imprimeMatriz(graph);
 	printf("\n");
-	menorCaminho(graph,0, 4);
-    return 0;
+	menorCaminho(graph,0, 5);
+	return 0;
 }
